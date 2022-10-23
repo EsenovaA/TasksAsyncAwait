@@ -9,7 +9,7 @@ internal static class Calculator
     // todo: change this method to support cancellation token
     public static async Task<long> CalculateAsync(int n, CancellationToken token)
     {
-        return await Task.Run(() => CalculateSync(n, token));
+        return await Task.Run(() => CalculateSync(n, token)); //Warning: better to use overloaded Task.Run method that has CancellationToken param
     }
 
     private static long CalculateSync(int n, CancellationToken token)

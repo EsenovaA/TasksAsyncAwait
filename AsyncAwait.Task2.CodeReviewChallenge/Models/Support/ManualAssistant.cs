@@ -26,6 +26,7 @@ public class ManualAssistant : IAssistant
         }
         catch (HttpRequestException ex)
         {
+            // Error: looks like we don't need all awaits and tasks here
             return await Task.Run(async () =>
                 await Task.FromResult($"Failed to register assistance request. Please try later. {ex.Message}"));
         }

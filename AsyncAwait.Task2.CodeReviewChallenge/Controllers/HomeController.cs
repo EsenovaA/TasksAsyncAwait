@@ -25,6 +25,7 @@ public class HomeController : Controller
         return View();
     }
 
+    // Error: yes, your thought is correct. Just implement it like another async action:)
     public ActionResult Privacy()
     {
         ViewBag.Message = _privacyDataService.GetPrivacyDataAsync().Result;//better not to use result

@@ -4,6 +4,7 @@ namespace AsyncAwait.Task2.CodeReviewChallenge.Services;
 
 public class PrivacyDataService : IPrivacyDataService
 {
+    // Warning: Do we really need this task to be async? Or is it just emulation for learning purposes?
     public Task<string> GetPrivacyDataAsync()
     {
         return new ValueTask<string>("This Policy describes how async/await processes your personal data," +

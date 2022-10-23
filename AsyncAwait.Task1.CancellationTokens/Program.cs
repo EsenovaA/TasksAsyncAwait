@@ -30,11 +30,11 @@ internal class Program
         Console.WriteLine("Enter N: ");
 
         var input = Console.ReadLine();
-        while (input.Trim().ToUpper() != "Q")
+        while (input.Trim().ToUpper() != "Q") // Warning: theoretically input could be null here
         {
             if (int.TryParse(input, out var n))
             {
-                cts?.Cancel();
+                cts?.Cancel(); // Warning: I wouldn't call it first time, but I'd call it when Q is pressed
                 cts = new CancellationTokenSource();    
                 CalculateSum(n, cts.Token);
             }
@@ -59,7 +59,7 @@ internal class Program
             var sum = await Calculator.CalculateAsync(n, token);
             Console.WriteLine($"Sum for {n} = {sum}.");
         }
-        catch (Exception)
+        catch (Exception) // Error: only cancellation exception should be caught
         {
             Console.WriteLine($"Sum for {n} cancelled...");
             return;
