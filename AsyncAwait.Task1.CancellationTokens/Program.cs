@@ -8,6 +8,7 @@
 */
 
 using System;
+using System.Threading;
 
 namespace AsyncAwait.Task1.CancellationTokens;
 
@@ -19,6 +20,8 @@ internal class Program
     /// <param name="args"></param>
     private static void Main(string[] args)
     {
+        CancellationTokenSource cts = null;
+
         Console.WriteLine("Mentoring program L2. Async/await.V1. Task 1");
         Console.WriteLine("Calculating the sum of integers from 0 to N.");
         Console.WriteLine("Use 'q' key to exit...");
@@ -31,7 +34,9 @@ internal class Program
         {
             if (int.TryParse(input, out var n))
             {
-                CalculateSum(n);
+                cts?.Cancel();
+                cts = new CancellationTokenSource();    
+                CalculateSum(n, cts.Token);
             }
             else
             {
@@ -46,16 +51,22 @@ internal class Program
         Console.ReadLine();
     }
 
-    private static void CalculateSum(int n)
+    private static async void CalculateSum(int n, CancellationToken token)
     {
         // todo: make calculation asynchronous
-        var sum = Calculator.Calculate(n);
-        Console.WriteLine($"Sum for {n} = {sum}.");
+        try
+        {
+            var sum = await Calculator.CalculateAsync(n, token);
+            Console.WriteLine($"Sum for {n} = {sum}.");
+        }
+        catch (Exception)
+        {
+            Console.WriteLine($"Sum for {n} cancelled...");
+            return;
+        }
+        
         Console.WriteLine();
-        Console.WriteLine("Enter N: ");
-        // todo: add code to process cancellation and uncomment this line    
-        // Console.WriteLine($"Sum for {n} cancelled...");
 
-        Console.WriteLine($"The task for {n} started... Enter N to cancel the request:");
+        Console.WriteLine("Enter N: ");
     }
 }
